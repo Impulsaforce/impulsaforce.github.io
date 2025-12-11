@@ -1,0 +1,86 @@
+{
+  "profile": {
+    "name": "Alex Architect",
+    "role": "Salesforce Technical Architect",
+    "heroTitle": "Architecting Scalable Cloud Solutions",
+    "heroSubtitle": "Transformando negocios a través de la arquitectura Salesforce de alto rendimiento.",
+    "metrics": [
+      { "label": "Años de Experiencia", "value": "10+" },
+      { "label": "Certificaciones", "value": "18" },
+      { "label": "Proyectos", "value": "45+" }
+    ]
+  },
+  "clients": [
+    "Global Corp", "Tech Solutions", "Finance Flow", "Cloud Systems", "Retail Giant"
+  ],
+"stack": [
+  { 
+    "name": "Sales Cloud", 
+    "logo": "https://img.logo-storage.com/salesforce.png", 
+    "color": "bg-red-100 text-red-800" 
+  },
+  { 
+    "name": "LWC", 
+    "logo": "https://img.logo-storage.com/lwc.png", 
+    "color": "bg-purple-100 text-purple-800" 
+  },
+  { 
+    "name": "Mulesoft", 
+    "logo": "https://img.logo-storage.com/mulesoft.png", 
+    "color": "bg-green-100 text-green-800" 
+  },
+  { 
+    "name": "DevOps Center", 
+    "logo": "https://img.logo-storage.com/devops.png", 
+    "color": "bg-yellow-100 text-yellow-800" 
+  },
+  { 
+    "name": "Apex", 
+    "logo": "https://img.logo-storage.com/apex.png", 
+    "color": "bg-blue-100 text-blue-800" 
+  }
+],
+"certifications": [
+  {
+    "name": "Salesforce Certified Technical Architect (CTA)",
+    "logo": "https://tu-url.com/logo-cta.png",
+    "link": "https://trailhead.salesforce.com/credentials/architectoverview"
+  },
+  {
+    "name": "Application Architect",
+    "logo": "https://tu-url.com/logo-app-arch.png",
+    "link": "https://trailhead.salesforce.com/credentials/applicationarchitect"
+  },
+  {
+    "name": "System Architect",
+    "logo": "https://tu-url.com/logo-sys-arch.png",
+    "link": "https://trailhead.salesforce.com/credentials/systemarchitect"
+  }
+],
+  "experience": [
+    {
+      "company": "Consultora Big 4",
+      "role": "Senior Manager & Architect",
+      "year": "2020 - Presente",
+      "desc": "Liderando transformaciones digitales multi-cloud."
+    },
+    {
+      "company": "Tech Startup",
+      "role": "Salesforce Lead Developer",
+      "year": "2017 - 2020",
+      "desc": "Implementación de CI/CD y desarrollo de LWC complejos."
+    }
+  ],
+  "blog": [
+    {
+      "title": "Patrones de Integración en Salesforce",
+      "date": "10 Oct 2023",
+      "content": "# Patrones de Integración\n\nEn este artículo hablaremos de **Request & Reply** y **Fire & Forget**.\n\n## ¿Por qué es importante?\nLa arquitectura desacoplada permite..."
+    },
+    {
+      "title": "LWC vs Aura: El cambio definitivo",
+      "date": "05 Sept 2023",
+      "content": "El modelo de componentes web estándar ha llegado para quedarse. Aquí explico por qué deberías migrar..."
+    }
+  ]
+}
