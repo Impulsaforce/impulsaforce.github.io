@@ -28,8 +28,10 @@ async function init() {
 }
 
 // --- Lógica del Dark Mode ---
+// --- Lógica del Dark Mode (Versión Botón) ---
 function initThemeToggle() {
-    const toggle = document.getElementById('theme-toggle');
+    // Usamos el ID del botón ahora
+    const toggleButton = document.getElementById('theme-toggle'); 
     const sunIcon = document.getElementById('sun-icon');
     const moonIcon = document.getElementById('moon-icon');
     const html = document.documentElement;
@@ -38,42 +40,34 @@ function initThemeToggle() {
     let currentTheme = localStorage.getItem('theme');
     
     if (!currentTheme) {
-        // Si no hay preferencia guardada, usa la del sistema
         currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
-    // B. Aplicar el tema inicial
+    // B. Aplicar el tema inicial y alternar iconos
     function applyTheme(theme) {
         if (theme === 'dark') {
             html.classList.add('dark');
-            toggle.checked = true;
-            // Ocultar Sol, Mostrar Luna
+            // Oculta el Sol (opacidad 0), Muestra la Luna (quita opacidad 0)
             sunIcon.classList.add('opacity-0');
             moonIcon.classList.remove('opacity-0');
         } else {
             html.classList.remove('dark');
-            toggle.checked = false;
-            // Mostrar Sol, Ocultar Luna
+            // Muestra el Sol, Oculta la Luna
             sunIcon.classList.remove('opacity-0');
             moonIcon.classList.add('opacity-0');
         }
         localStorage.setItem('theme', theme);
     }
     
+    // Aplicamos el tema inicial al cargar
     applyTheme(currentTheme);
 
-    // C. Escuchar cambios del Toggle
-    toggle.addEventListener('change', (e) => {
-        const newTheme = e.target.checked ? 'dark' : 'light';
+    // C. Escuchar CLIC en el botón para alternar tema
+    toggleButton.addEventListener('click', () => {
+        const isDark = html.classList.contains('dark');
+        const newTheme = isDark ? 'light' : 'dark';
         applyTheme(newTheme);
     });
-    
-    // El icono inicial debe tener la clase opacidad-0 si el tema es light para que la transición funcione
-    if (currentTheme === 'light') {
-         moonIcon.classList.add('opacity-0');
-    } else {
-         sunIcon.classList.add('opacity-0');
-    }
 }
 
 // 1. Renderizado del Layout (Nav y Footer)
@@ -88,22 +82,21 @@ function renderLayout(profile) {
                          <span class="font-bold text-xl text-gray-800 dark:text-white tracking-tight">Alex<span class="text-blue-600">Architect</span></span>
                     </div>
                     
-                    <div class="hidden md:flex space-x-8 items-center">
-                        <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Portfolio</a>
-                        <a href="blog.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Blog</a>
-                        
-                        <div class="flex items-center space-x-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-colors">
-                            <svg id="sun-icon" class="w-5 h-5 text-yellow-500 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zm7.65 8.25a.75.75 0 01.75.75.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM4.35 11.25a.75.75 0 01.75.75.75.75 0 01-.75.75H2.1a.75.75 0 010-1.5h2.25zM17.5 6.47A.75.75 0 0117.5 7L16 8.5V7.75a.75.75 0 011.5 0zM6.5 17.5a.75.75 0 01.75-.75.75.75 0 01.75.75L7.97 19.5a.75.75 0 01-1.06 0L5.5 18.03a.75.75 0 01.97-.97zM6.47 6.5a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0V7.25a.75.75 0 00-.75-.75zM19.5 16.03a.75.75 0 00-.97-.97L16.03 17.5a.75.75 0 001.06 1.06l1.06-1.06a.75.75 0 001.06-1.06zM12 15a3 3 0 100-6 3 3 0 000 6z"></path></svg>
-                            
-                            <label for="theme-toggle" class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="theme-toggle" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            </label>
-                            
-                            <svg id="moon-icon" class="w-5 h-5 text-indigo-400 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M9.332 3.664a1 1 0 001.12.392A14.288 14.288 0 0118 12.25c0 3.79-1.53 7.394-4.28 10.144a15.77 15.77 0 01-10.144 4.28A14.288 14.288 0 013.75 18c0-3.79 1.53-7.394 4.28-10.144a15.77 15.77 0 0110.144-4.28z"></path></svg>
+                    <div class="hidden md:flex flex-grow justify-center">
+                        <div class="flex space-x-10">
+                            <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Portfolio</a>
+                            <a href="blog.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Blog</a>
+                            <a href="#contact" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Contactar</a>
                         </div>
-
-                        <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Contactar</a>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <button id="theme-toggle" aria-label="Toggle Dark Mode" 
+                                class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300 relative"> 
+                                <svg id="sun-icon" class="w-6 h-6 text-yellow-500 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zm7.65 8.25a.75.75 0 01.75.75.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM4.35 11.25a.75.75 0 01.75.75.75.75 0 01-.75.75H2.1a.75.75 0 010-1.5h2.25zM17.5 6.47A.75.75 0 0117.5 7L16 8.5V7.75a.75.75 0 011.5 0zM6.5 17.5a.75.75 0 01.75-.75.75.75 0 01.75.75L7.97 19.5a.75.75 0 01-1.06 0L5.5 18.03a.75.75 0 01.97-.97zM6.47 6.5a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0V7.25a.75.75 0 00-.75-.75zM19.5 16.03a.75.75 0 00-.97-.97L16.03 17.5a.75.75 0 001.06 1.06l1.06-1.06a.75.75 0 001.06-1.06zM12 15a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                            
+                            <svg id="moon-icon" class="w-6 h-6 text-indigo-400 transition-opacity duration-300 absolute inset-0 m-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M9.332 3.664a1 1 0 001.12.392A14.288 14.288 0 0118 12.25c0 3.79-1.53 7.394-4.28 10.144a15.77 15.77 0 01-10.144 4.28A14.288 14.288 0 013.75 18c0-3.79 1.53-7.394 4.28-10.144a15.77 15.77 0 0110.144-4.28z"></path></svg>
+                        </button>
                     </div>
                 </div>
             </div>
