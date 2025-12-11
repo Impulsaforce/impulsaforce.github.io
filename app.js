@@ -10,6 +10,7 @@ async function init() {
         renderLayout(data.profile); // Header y Footer común
 
         initThemeToggle();
+        initMobileMenu();
 
         // Router muy básico
         const path = window.location.pathname;
@@ -70,10 +71,56 @@ function initThemeToggle() {
     });
 }
 
+// --- Lógica del Menú Móvil ---
+function initMobileMenu() {
+    const openButton = document.getElementById('mobile-menu-button');
+    const closeButton = document.getElementById('close-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('mobile-menu-overlay');
+
+    if (!openButton || !menu || !closeButton || !overlay) {
+        console.error("IDs de menú móvil no encontrados.");
+        return;
+    }
+
+    const openMenu = () => {
+        // Muestra el menú: Quita la clase 'oculto' (translate-x-full) y añade 'visible' (translate-x-0)
+        menu.classList.remove('translate-x-full');
+        menu.classList.add('translate-x-0');
+        
+        // Muestra el overlay: Quita la opacidad y los pointer-events
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+    };
+
+    const closeMenu = () => {
+        // Oculta el menú: Añade la clase 'oculto' (translate-x-full)
+        menu.classList.remove('translate-x-0');
+        menu.classList.add('translate-x-full');
+        
+        // Oculta el overlay: Añade la opacidad y los pointer-events
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+    };
+
+    // 1. Abrir Menú con el botón de hamburguesa
+    openButton.addEventListener('click', openMenu);
+
+    // 2. Cerrar Menú con la 'X'
+    closeButton.addEventListener('click', closeMenu);
+
+    // 3. Cerrar Menú al hacer clic en el overlay (fuera del menú)
+    overlay.addEventListener('click', closeMenu);
+    
+    // 4. Cerrar Menú al hacer clic en un enlace de navegación
+    const links = menu.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+}
+
 // 1. Renderizado del Layout (Nav y Footer)
 function renderLayout(profile) {
     const headerHTML = `
-        <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm dark:shadow-xl transition-colors duration-500">
+        <nav class="w-full backdrop-blur-md"> 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20">
                     
@@ -90,17 +137,70 @@ function renderLayout(profile) {
                         </div>
                     </div>
                     
-                    <div class="flex items-center">
+                    <div class="flex items-center space-x-2"> 
+                        
+                        <div class="hidden md:flex items-center space-x-2"> 
+                            <a href="TU_LINKEDIN_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.784 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.366-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+                            </a>
+                            <a href="TU_TRAILBLAZER_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.96 0c-4.22 0-8.21 1.6-11.23 4.63-.09.09-.17.18-.25.28l.01-.01c-.13.16-.25.32-.36.49-.07.1-.13.2-.18.31-.05.12-.09.23-.13.35-.04.12-.07.24-.09.37-.02.1-.03.2-.05.3l-.01.03c-.01.07-.02.13-.02.2v.03c0 .11 0 .22.02.33.02.11.04.22.07.33.03.11.07.21.12.31.05.1.1.2.16.3.06.1.13.2.2.3.07.09.15.18.23.27.08.09.16.18.25.26 3.02 3.02 7.02 4.63 11.23 4.63 4.22 0 8.21-1.6 11.23-4.63 3.03-3.03 4.63-7.02 4.63-11.23 0-4.22-1.6-8.21-4.63-11.23C20.17 1.6 16.18 0 11.96 0zm-4.3 11.89l1.82 1.82 2.62-2.62v6.62h2.52v-6.62l2.62 2.62 1.82-1.82L12 6.55l-4.34 4.34z"/></svg>
+                            </a>
+                            <a href="TU_GITHUB_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300"> 
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.087-.731.084-.676.084-.676 1.205.086 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.492.998.108-.77.418-1.305.762-1.604-2.665-.3-5.466-1.331-5.466-5.93 0-1.31.465-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.808 5.625-5.471 5.922.42.36.786 1.127.786 2.275v3.315c0 .319.192.694.801.576C20.559 21.792 24 17.294 24 12c0-6.627-5.373-12-12-12z"></path></svg>
+                            </a>
+                        </div>
+                        
                         <button id="theme-toggle" aria-label="Toggle Dark Mode" 
                                 class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300 relative"> 
-                                <svg id="sun-icon" class="w-6 h-6 text-yellow-500 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zm7.65 8.25a.75.75 0 01.75.75.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM4.35 11.25a.75.75 0 01.75.75.75.75 0 01-.75.75H2.1a.75.75 0 010-1.5h2.25zM17.5 6.47A.75.75 0 0117.5 7L16 8.5V7.75a.75.75 0 011.5 0zM6.5 17.5a.75.75 0 01.75-.75.75.75 0 01.75.75L7.97 19.5a.75.75 0 01-1.06 0L5.5 18.03a.75.75 0 01.97-.97zM6.47 6.5a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0V7.25a.75.75 0 00-.75-.75zM19.5 16.03a.75.75 0 00-.97-.97L16.03 17.5a.75.75 0 001.06 1.06l1.06-1.06a.75.75 0 001.06-1.06zM12 15a3 3 0 100-6 3 3 0 000 6z"></path></svg>
-                            
+                            <svg id="sun-icon" class="w-6 h-6 text-yellow-500 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zm7.65 8.25a.75.75 0 01.75.75.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM4.35 11.25a.75.75 0 01.75.75.75.75 0 01-.75.75H2.1a.75.75 0 010-1.5h2.25zM17.5 6.47A.75.75 0 0117.5 7L16 8.5V7.75a.75.75 0 011.5 0zM6.5 17.5a.75.75 0 01.75-.75.75.75 0 01.75.75L7.97 19.5a.75.75 0 01-1.06 0L5.5 18.03a.75.75 0 01.97-.97zM6.47 6.5a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0V7.25a.75.75 0 00-.75-.75zM19.5 16.03a.75.75 0 00-.97-.97L16.03 17.5a.75.75 0 001.06 1.06l1.06-1.06a.75.75 0 001.06-1.06zM12 15a3 3 0 100-6 3 3 0 000 6z"></path></svg>
                             <svg id="moon-icon" class="w-6 h-6 text-indigo-400 transition-opacity duration-300 absolute inset-0 m-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M9.332 3.664a1 1 0 001.12.392A14.288 14.288 0 0118 12.25c0 3.79-1.53 7.394-4.28 10.144a15.77 15.77 0 01-10.144 4.28A14.288 14.288 0 013.75 18c0-3.79 1.53-7.394 4.28-10.144a15.77 15.77 0 0110.144-4.28z"></path></svg>
+                        </button>
+
+                        <button id="mobile-menu-button" aria-label="Abrir menú" 
+                                class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300 md:hidden">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
                         </button>
                     </div>
                 </div>
             </div>
+            
         </nav>
+
+        <div id="mobile-menu-overlay" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+        <div id="mobile-menu" class="md:hidden fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 pt-6">
+            
+            <div class="flex justify-end px-4 mb-8">
+                <button id="close-menu-button" aria-label="Cerrar menú" 
+                        class="p-2 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex flex-col space-y-2 px-4 border-b border-gray-100 dark:border-gray-800 pb-4">
+                <a href="index.html" class="block py-2 px-3 text-lg font-medium text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-800 rounded-lg transition-colors duration-300">Portfolio</a>
+                <a href="blog.html" class="block py-2 px-3 text-lg font-medium text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-800 rounded-lg transition-colors duration-300">Blog</a>
+                <a href="#contact" class="block py-2 px-3 text-lg font-medium text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-800 rounded-lg transition-colors duration-300">Contactar</a>
+            </div>
+            
+            <div class="flex justify-center space-x-6 p-4 pt-6">
+                <a href="TU_LINKEDIN_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.784 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.366-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+                </a>
+                <a href="TU_TRAILBLAZER_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.96 0c-4.22 0-8.21 1.6-11.23 4.63-.09.09-.17.18-.25.28l.01-.01c-.13.16-.25.32-.36.49-.07.1-.13.2-.18.31-.05.12-.09.23-.13.35-.04.12-.07.24-.09.37-.02.1-.03.2-.05.3l-.01.03c-.01.07-.02.13-.02.2v.03c0 .11 0 .22.02.33.02.11.04.22.07.33.03.11.07.21.12.31.05.1.1.2.16.3.06.1.13.2.2.3.07.09.15.18.23.27.08.09.16.18.25.26 3.02 3.02 7.02 4.63 11.23 4.63 4.22 0 8.21-1.6 11.23-4.63 3.03-3.03 4.63-7.02 4.63-11.23 0-4.22-1.6-8.21-4.63-11.23C20.17 1.6 16.18 0 11.96 0zm-4.3 11.89l1.82 1.82 2.62-2.62v6.62h2.52v-6.62l2.62 2.62 1.82-1.82L12 6.55l-4.34 4.34z"/></svg>
+                </a>
+                <a href="TU_GITHUB_URL_AQUI" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"> 
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.087-.731.084-.676.084-.676 1.205.086 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.492.998.108-.77.418-1.305.762-1.604-2.665-.3-5.466-1.331-5.466-5.93 0-1.31.465-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.808 5.625-5.471 5.922.42.36.786 1.127.786 2.275v3.315c0 .319.192.694.801.576C20.559 21.792 24 17.294 24 12c0-6.627-5.373-12-12-12z"></path></svg>
+                </a>
+            </div>
+
+        </div>
     `;
 
     const footerHTML = `
@@ -173,8 +273,7 @@ function renderPortfolio(data) {
     const m3 = data.profile.metrics[2]; // Ej: Proyectos
 
     container.innerHTML = `
-        <section class="min-h-screen flex items-center pt-24 pb-12 bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-500">
-                <div class="absolute top-0 right-0 w-2/3 h-full bg-blue-100/80 dark:bg-blue-900/60 rounded-l-[150px] -z-10 translate-x-32 skew-x-[-10deg] transition-colors duration-500"></div>            
+        <section class="min-h-screen flex items-center  pb-12 bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-500">
                 <div class="max-w-7xl mx-auto px-4 w-full grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8 animate-fade-in-up z-10 order-2 lg:order-1">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 font-bold tracking-wider uppercase transition-colors">
