@@ -218,7 +218,7 @@ function renderLayout(profile) {
 // 2. Renderizado del Portfolio
 function renderPortfolio(data) {
     const container = document.getElementById('main-content');
-
+    
     // --- GENERADORES DE HTML ---
     
     // 1. Logos Clientes
@@ -273,7 +273,7 @@ function renderPortfolio(data) {
     const m3 = data.profile.metrics[2]; // Ej: Proyectos
 
     container.innerHTML = `
-        <section class="min-h-screen flex items-center  pb-12 bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-500">
+        <section class="pt-20 lg:pt-0 min-h-screen flex items-center  pb-12 bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-500">
                 <div class="max-w-7xl mx-auto px-4 w-full grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8 animate-fade-in-up z-10 order-2 lg:order-1">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 font-bold tracking-wider uppercase transition-colors">
