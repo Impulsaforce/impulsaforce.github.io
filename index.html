@@ -6,6 +6,13 @@
     <title>Alex Architect - Salesforce Portfolio</title>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {

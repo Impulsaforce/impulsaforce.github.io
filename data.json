@@ -1,13 +1,13 @@
 {
   "profile": {
-    "name": "Alex Architect",
+    "name": "David Román",
     "role": "Salesforce Technical Architect",
     "heroTitle": "Architecting Scalable Cloud Solutions",
     "heroSubtitle": "Transformando negocios a través de la arquitectura Salesforce de alto rendimiento.",
     "metrics": [
-      { "label": "Años de Experiencia", "value": "10+" },
-      { "label": "Certificaciones", "value": "18" },
-      { "label": "Proyectos", "value": "45+" }
+      { "label": "Años de Experiencia", "value": "+4" },
+      { "label": "Certificaciones", "value": "13" },
+      { "label": "Proyectos", "value": "+30" }
     ]
   },
   "clients": [
